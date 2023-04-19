@@ -17,7 +17,6 @@ validateUrl = (req, res, next) => {
   next();
 };
 
-
 const authUrl = {
   validateUrl: validateUrl,
 };

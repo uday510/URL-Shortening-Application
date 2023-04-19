@@ -9,7 +9,7 @@ console.clear(); // clear the console to remove previous logging
 
 // Logs time for every request
 function requestTime(req, res, next) {
-    process.stdout.write(`Request-Date: ${new Date().toLocaleDateString()} ${new Date().toLocaleTimeString()} IST, `);
+    process.stdout.write(`Request-Date: ${new Date().toLocaleDateString()} ${new Date().toLocaleTimeString()} IST, ${req.method} ${req.url}`);
     next();
 }
 

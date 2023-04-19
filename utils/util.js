@@ -22,19 +22,6 @@ exports.isValidUrl = (url) => {
       "(\\#[-a-z\\d_]*)?$",
     "i"
   );
-
-  console.log(pattern.test(url));
+  
   return pattern.test(url);
 }
-
-exports.userObject = (user) => {
-  return {
-    _id: user._id,
-    name: user.name,
-    userId: user.userId,
-    email: user.email,
-    urlsCreated: user.urlsCreated,
-    createdAt: user.createdAt,
-    updatedAt: user.updatedAt,
-  };
-};

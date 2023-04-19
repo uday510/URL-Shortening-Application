@@ -1,6 +1,7 @@
 const bcrypt = require("bcryptjs");
 const Users = require("../models/user.model");
-const Utils = require("../utils/util");
+const objectConverter = require("../utils/objectConverter");
+
 
  exports.updateUser = async (req, res) => {
      /**
@@ -81,7 +82,7 @@ const Utils = require("../utils/util");
    try {
        const user = await Users.findOne({ userId: req.userId });
     
-       res.status(200).send(Utils.userObject(user));
+       res.status(200).send(objectConverter.userObject(user));
        
    } catch (err) {
      console.log(err.message);
