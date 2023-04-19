@@ -1,5 +1,7 @@
 const bcrypt = require("bcryptjs");
 const User = require("../models/user.model");
+const jwt = require("jsonwebtoken");
+const config = require("../configs/auth.config");
 
 exports.signup = async (req, res) => {
 
@@ -37,7 +39,8 @@ exports.signup = async (req, res) => {
 
 exports.signin = async (req, res) => {
 
-    // Search the user if exists
+   try {
+     // Search the user if exists
     const user = await User.findOne({userId: req.body.userId});
 
     if(user == null) {
@@ -71,5 +74,11 @@ exports.signin = async (req, res) => {
         email: user.email,
         accessToken: token
     });
+   } catch (err) {
+    console.error(err.message);
+        res.status(500).send({
+            message: "Internal server error while signing user"
+        });
+   }
 }
 

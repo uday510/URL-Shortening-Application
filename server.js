@@ -17,12 +17,12 @@ app.use(requestTime); // logs request time
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// require("./routes")(app) // Initialize the route/s
+require("./routes")(app) // Initialize the route/s
 
 // Connect to the Database
 mongoose
   .connect(dbConfig.DB_URL, {
-    useNewUrlParser: true,
+    useNewUrlParser: true, // To avoid Deprecation Warning
     useUnifiedTopology: true,
   })
   .then(() => {
