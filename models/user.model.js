@@ -25,6 +25,10 @@ const userSchema = new mongoose.Schema({
         minLength: 10,
         unique: true
     },
+    urls: {
+       type: [mongoose.SchemaTypes.ObjectId],
+        ref: "Url",
+    },
      createdAt: {
         type: Date,
         immutable: true,

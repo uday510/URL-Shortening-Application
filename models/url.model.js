@@ -1,6 +1,9 @@
 const mongoose = require("mongoose");
 
 const urlSchema = new mongoose.Schema({
+    /**
+     * urlId, originalUrl, shortUrl, userId, createdAt, updatedAt
+     */
     urlId: {
         type: String,
         required: true
