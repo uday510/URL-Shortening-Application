@@ -21,13 +21,15 @@ validateUrl = (req, res, next) => {
 
 // To check whether the body contains the new url ans url id provided in req.params
 // that needs to be updated is exists in the user DB.
-
-isValidUrl = async (req, res, next) => {
+isUrlExists = async (req, res, next) => {
   if (!req.body.newUrl) {
     return res.status(400).send({
       message: "Failed ! newUrl not provided",
     });
   }
+  next();
+};
+isValidUrl = async (req, res, next) => {
   // check if the params contains is or not.
   if (!req.params.urlId) {
     return res.status(400).send({
@@ -55,7 +57,7 @@ isValidUrl = async (req, res, next) => {
   if (!flag) {
     return res.status(400).send({
       message:
-        "Failed ! Provided url id that needs to be updated is not found in the user database",
+        "Failed ! Provided url id that needs is not found in the user database",
     });
   }
   next();
@@ -63,7 +65,8 @@ isValidUrl = async (req, res, next) => {
 
 const authUrl = {
   validateUrl: validateUrl,
-  isValidUrl: isValidUrl,
+  isUrlExists: isUrlExists,
+  isValidUrl: isValidUrl
 };
 
 module.exports = authUrl;

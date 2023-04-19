@@ -22,7 +22,13 @@ module.exports = (app) => {
 
   app.patch(
     "/app/api/v1/urls/:urlId",
-    [authUser.verifyToken, authUrl.isValidUrl],
+    [authUser.verifyToken, authUrl.isUrlExists, authUrl.isValidUrl],
     urlController.updateUrl
+  );
+
+  app.delete(
+    "/app/api/v1/urls/:urlId",
+    [authUser.verifyToken, authUrl.isValidUrl],
+    urlController.deleteUrl
   );
 };

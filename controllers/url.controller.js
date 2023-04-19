@@ -78,11 +78,17 @@ exports.fetchUrl = async (req, res) => {
       _id: req.params.urlId,
     });
 
+    if (!url) {
+      return res.status(500).send({
+        message: "URL not found for the requested URL Id",
+      });
+    }
+
     return res.status(200).send(objectConverter.urlResponse(url));
   } catch (err) {
     console.error(err.message);
     res.status(500).send({
-      message: "Internal server error while fetching URL's",
+      message: "Internal server error while fetching URL",
     });
   }
 };
@@ -110,7 +116,7 @@ exports.updateUrl = async (req, res) => {
     url.urlId = newUrlId;
     url.originalUrl = newUrl;
     url.shortUrl = newShortUrl;
-    
+
     const updatedUrl = await url.save();
     return res.status(200).send({
       message: "Successfully updated url details",
@@ -120,6 +126,32 @@ exports.updateUrl = async (req, res) => {
     console.error(err.message);
     res.status(500).send({
       message: "Internal server error while updating URL",
+    });
+  }
+};
+exports.deleteUrl = async (req, res) => {
+  try {
+    await Url.deleteOne({
+      _id: req.params.urlId,
+    });
+
+    // delete urlId from the user url list
+    const user = await User.findOne({ userId: req.userId });
+
+    // find index of url id in the user url list
+
+    let indexToBeRemoved = user.urlsCreated.indexOf(req.params.urlId);
+
+    user.urlsCreated.splice(indexToBeRemoved, 1);
+
+    await user.save();
+
+    return res.status(200).send({
+      message: "Successfully deleted Url",
+    });
+  } catch (err) {
+    return res.status(500).send({
+      message: "Some internal error occurred while deleting Url.",
     });
   }
 };

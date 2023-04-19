@@ -7,6 +7,7 @@ module.exports = (app) => {
     [authUser.verifyToken],
     userController.fetchUserDetails
   );
+  
   app.put(
     "/app/api/v1/users/",
     [authUser.verifyToken],
@@ -23,5 +24,5 @@ module.exports = (app) => {
     "/app/api/v1/users/:userId",
     [authUser.verifyToken],
     userController.deleteUser
-  )
+  );
 };
