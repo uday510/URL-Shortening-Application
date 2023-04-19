@@ -1,9 +1,11 @@
-const authController = require("../controllers/auth.controller");
-const {authUser} = require("../middlewares/index");
+const userController = require("../controllers/user.controller");
+const {authUser} = require("../middleware");
+
 
 module.exports = (app) => {
+
+    app.put("/app/api/v1/users/", [authUser.verifyToken], userController.updatePassword);
     
-    app.post("/app/api/v1/auth/signup", [authUser.validateSignupRequest], authController.signup);
-  
-    app.post("/app/api/v1/auth/signin", [authUser.validateSigninRequest, authUser.verifyToken], authController.signin);
+    app.put("/app/api/v1/users/:userId",[authUser.verifyToken], userController.updateUser);
+
 }
