@@ -15,14 +15,15 @@ const objectConverter = require("../utils/objectConverter");
      }
 
      if (req.params.userId != req.userId) {
-         return res.status(400).send({
-             message: "user id provided in req.params does not match with token userId"
-         });
+       return res.status(400).send({
+         message:
+           "user id provided in req.params does not match with token userId",
+       });
      } 
 
      try {
 
-         const user = await Users.findOne({ userId: req.userId });
+        const user = await Users.findOne({ userId: req.userId });
 
         user.name = (req.body.name != undefined) ? req.body.name : user.name;
         user.email = (req.body.email != undefined) ? req.body.email : user.email;
@@ -106,8 +107,8 @@ exports.deleteUser = async (req, res) => {
       });
     } 
     try {
-        const user = await Users.deleteOne({
-            userId: req.params.userId
+        await Users.deleteOne({
+          userId: req.params.userId,
         });
 
         return res.status(200).send({

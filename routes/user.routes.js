@@ -13,7 +13,7 @@ module.exports = (app) => {
     userController.updatePassword
   );
 
-  app.put(
+  app.patch(
     "/app/api/v1/users/:userId",
     [authUser.verifyToken],
     userController.updateUser

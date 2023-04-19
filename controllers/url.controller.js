@@ -60,7 +60,7 @@ exports.fetchAllUrls = async (req, res) => {
     queryObj._id = {
       $in: user.urlsCreated, // Returns the Array of url id's.
     };
-    
+
     const urls = await Url.find(queryObj);
 
     res.status(200).send(objectConverter.urlListResponse(urls));
@@ -75,7 +75,7 @@ exports.fetchAllUrls = async (req, res) => {
 exports.fetchUrl = async (req, res) => {
   try {
     const url = await Url.findOne({
-      _id: req.params.id,
+      _id: req.params.urlId,
     });
 
     return res.status(200).send(objectConverter.urlResponse(url));
@@ -83,6 +83,43 @@ exports.fetchUrl = async (req, res) => {
     console.error(err.message);
     res.status(500).send({
       message: "Internal server error while fetching URL's",
+    });
+  }
+};
+exports.updateUrl = async (req, res) => {
+  try {
+    const url = await Url.findOne({
+      _id: req.params.urlId,
+    });
+
+    // check if valid url or not
+    if (!url) {
+      return res.status(400).send({
+        message: "Failed ! not a valid url id",
+      });
+    }
+
+    const newUrl = req.body.newUrl;
+
+    // generate new short url
+    const newUrlId = shortid.generate();
+
+    const newShortUrl = `${process.env.baseURL}/${newUrlId}`;
+
+    // update the url object
+    url.urlId = newUrlId;
+    url.originalUrl = newUrl;
+    url.shortUrl = newShortUrl;
+    
+    const updatedUrl = await url.save();
+    return res.status(200).send({
+      message: "Successfully updated url details",
+      updatedUrlDetails: updatedUrl,
+    });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send({
+      message: "Internal server error while updating URL",
     });
   }
 };

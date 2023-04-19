@@ -15,8 +15,14 @@ module.exports = (app) => {
   );
 
   app.get(
-    "/app/api/v1/urls/:id",
+    "/app/api/v1/urls/:urlId",
     [authUser.verifyToken],
     urlController.fetchUrl
+  );
+
+  app.patch(
+    "/app/api/v1/urls/:urlId",
+    [authUser.verifyToken, authUrl.isValidUrl],
+    urlController.updateUrl
   );
 };
