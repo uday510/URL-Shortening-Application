@@ -1,0 +1,33 @@
+{
+  "name": "url-shortening-application",
+  "version": "1.0.0",
+  "description": "This is a URL-Shortening-Application",
+  "main": "server.js",
+  "scripts": {
+    "devStart": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/uday510/URL-Shortening-Application.git"
+  },
+  "keywords": [
+    "Original-URL",
+    "Short-URL",
+    "URL-ID"
+  ],
+  "author": "Bandi Uday Teja",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/uday510/URL-Shortening-Application/issues"
+  },
+  "homepage": "https://github.com/uday510/URL-Shortening-Application#readme",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.20.2",
+    "jsonwebtoken": "^9.0.0",
+    "mongoose": "^7.0.4"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.22"
+  }
+}
