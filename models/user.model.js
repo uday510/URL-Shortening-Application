@@ -25,7 +25,7 @@ const userSchema = new mongoose.Schema({
         minLength: 10,
         unique: true
     },
-    urls: {
+    urlsCreated: {
        type: [mongoose.SchemaTypes.ObjectId],
         ref: "Url",
     },

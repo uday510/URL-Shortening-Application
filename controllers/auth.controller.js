@@ -34,7 +34,7 @@ exports.signup = async (req, res) => {
 }
 
 /**
- * ! Controller for signin
+ * ! Controller for sign-in
  */
 
 exports.signin = async (req, res) => {

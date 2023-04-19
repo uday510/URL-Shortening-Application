@@ -1,11 +1,11 @@
 const bcrypt = require("bcryptjs");
 const Users = require("../models/user.model");
+const Utils = require("../utils/util");
 
  exports.updateUser = async (req, res) => {
      /**
-      * ! Update User
+      * Update User
       */
-     console.log("PARAMS", req.params);
 
      if(!req.params.userId) {
             return res.status(400).send({
@@ -44,7 +44,6 @@ const Users = require("../models/user.model");
  }
 
  exports.updatePassword = async (req, res) => {
-    console.log(`Req-URL: ${req.url}`);
      
         if(!req.body.newPassword) {
             return res.status(400).send({
@@ -78,3 +77,45 @@ const Users = require("../models/user.model");
          });
      }
  }
+ exports.fetchUserDetails = async (req, res) => {
+   try {
+       const user = await Users.findOne({ userId: req.userId });
+    
+       res.status(200).send(Utils.userObject(user));
+       
+   } catch (err) {
+     console.log(err.message);
+     res.status(500).send({
+       message: "Internal server error while fetching user details",
+     });
+   }
+ };
+
+exports.deleteUser = async (req, res) => {
+    if (!req.params.userId) {
+      return res.status(400).send({
+        message: "User Id not provided",
+      });
+    }
+
+    if (req.params.userId != req.userId) {
+      return res.status(400).send({
+        message:
+          "user id provided in req.params does not match with token userId",
+      });
+    } 
+    try {
+        const user = await Users.deleteOne({
+            userId: req.params.userId
+        });
+
+        return res.status(200).send({
+            message : "Successfully deleted User"
+        });
+
+    } catch (err) {
+        return res.status(500).send({
+            message: "Some internal error occurred while deleting movie."
+        });
+    }
+}

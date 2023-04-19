@@ -91,7 +91,6 @@ verifyToken = (req, res, next) => {
           "Token expired at " + err.expiredAt + ", please create new token",
       });
     }
-    
     // Try to read the userId from the decoded token and store it in the req.userId property
     req.userId = decoded.id;
     next();
