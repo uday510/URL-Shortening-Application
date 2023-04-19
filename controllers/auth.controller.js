@@ -31,3 +31,45 @@ exports.signup = async (req, res) => {
    }    
 }
 
+/**
+ * ! Controller for signin
+ */
+
+exports.signin = async (req, res) => {
+
+    // Search the user if exists
+    const user = await User.findOne({userId: req.body.userId});
+
+    if(user == null) {
+        return res.status(400).send({
+            message: "Failed ! User id doesn't exist"
+        });
+    }
+
+    // User is existing, so now will do the password matching
+    const isPasswordValid = bcrypt.compareSync(req.body.password, user.password);
+    console.log(isPasswordValid);
+
+    if(!isPasswordValid) {
+        return res.status(401).send({
+            message: "Invalid Password"
+        });
+    }
+
+    /**
+     * Successful  login 
+     * Need to generate access token now
+     */
+    const token = jwt.sign({id: user.userId}, config.secret, {
+        expiresIn: 600 // Expires 10 Minutes
+    });
+
+    // Send the response 
+    res.status(200).send({
+        name: user.name,
+        userId: user.userId,
+        email: user.email,
+        accessToken: token
+    });
+}
+
