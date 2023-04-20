@@ -76,7 +76,7 @@ x-access-token: yJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImFkbWluIiwiaWF0Ijox
 
 ## Signup 
 
-127.0.0.1:4000/app/api/v1/auth/signin
+127.0.0.1:4000/app/api/v1/auth/signup
 
 NOTE: Password should be min 8 length, with at least a symbol, upper and lower case letters and a number 
 
@@ -135,5 +135,32 @@ Response :
 {
     "message": "Password successfully updated"
 }
+```
+## update details
+```
+
+Request :  // name or email
+{
+    "name": "newusername" 
+}
+
+Response : 
+{
+    "message": "User record successfully updated",
+    "data": {
+        "name": "newusername",
+        "email": "admin@gmail.com",
+        "userId": "admin"
+    }
+}
+```
+
+## To create short url
+```
+Request :
+{
+    "url": "http://www.udayteja.com"
+}
+Response :
 
 ```
