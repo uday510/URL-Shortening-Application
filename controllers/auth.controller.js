@@ -16,15 +16,16 @@ exports.signup = async (req, res) => {
     //  Insert this new user into the database
    try {
      const userCreated = await User.create(userObj);
-     console.log("user created", userCreated);
-
      // Return the response
     const userCreationResponse = {
         name: userCreated.name,
         userId: userCreated.userId,
         email: userCreated.email,
     }
-    res.status(201).send(userCreationResponse);
+       res.status(201).send({
+         message: "User created successfully",
+         data: userCreationResponse,
+       });
    } catch (err) {
         console.error("Error while creating user", err.message);
         res.status(500).send({
@@ -67,7 +68,8 @@ exports.signin = async (req, res) => {
     });
 
     // Send the response 
-    res.status(200).send({
+       res.status(200).send({
+        message: "Token sent successfully",
         name: user.name,
         userId: user.userId,
         email: user.email,

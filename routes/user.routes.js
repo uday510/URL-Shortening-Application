@@ -8,7 +8,7 @@ module.exports = (app) => {
     userController.fetchUserDetails
   );
   
-  app.put(
+  app.patch(
     "/app/api/v1/users/",
     [authUser.verifyToken],
     userController.updatePassword

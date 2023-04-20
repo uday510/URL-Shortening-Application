@@ -31,7 +31,7 @@ const objectConverter = require("../utils/objectConverter");
          await user.save();
          return res.status(200).send({
              message: "User record successfully updated",
-             details: {
+             data: {
                 name: user.name,
                 email: user.email,
                 userId: user.userId,
@@ -67,9 +67,11 @@ const objectConverter = require("../utils/objectConverter");
             message: "Invalid old Password"
             });
         }
-        user.password = req.body.newPassword;
+        
+        user.password = bcrypt.hashSync(req.body.newPassword, 8);
 
         await user.save();
+
         res.status(200).send({message: "Password successfully updated"});
 
      } catch (err) {
@@ -83,7 +85,10 @@ const objectConverter = require("../utils/objectConverter");
    try {
        const user = await Users.findOne({ userId: req.userId });
     
-       res.status(200).send(objectConverter.userObject(user));
+     res.status(200).send({
+       message: "Fetched user details successfully",
+       data: objectConverter.userObject(user)
+       });
        
    } catch (err) {
      console.log(err.message);

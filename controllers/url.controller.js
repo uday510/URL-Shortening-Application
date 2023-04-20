@@ -39,7 +39,10 @@ exports.createShortUrl = async (req, res) => {
       });
       user.urlsCreated.push(shortUrlCreated);
       await user.save();
-      return res.status(201).send(shortUrlCreated);
+      return res.status(201).send({
+        message: "Short URL created Successfully",
+        data: shortUrlCreated,
+      });
     }
   } catch (err) {
     console.error(err.message);
@@ -63,7 +66,10 @@ exports.fetchAllUrls = async (req, res) => {
 
     const urls = await Url.find(queryObj);
 
-    res.status(200).send(objectConverter.urlListResponse(urls));
+    res.status(200).send({
+      message: "Fetched urls successfully",
+      data: objectConverter.urlListResponse(urls)
+    });
   } catch (err) {
     console.error(err.message);
     res.status(500).send({
@@ -87,13 +93,24 @@ exports.fetchUrl = async (req, res) => {
     return res.status(200).send(objectConverter.urlResponse(url));
   } catch (err) {
     console.error(err.message);
-    res.status(500).send({
+    return res.status(500).send({
       message: "Internal server error while fetching URL",
     });
   }
 };
 exports.updateUrl = async (req, res) => {
   try {
+    if (!req.body.newUrl) {
+      return res.status(500).send({
+        message: "new url required to update.",
+      }); 
+    }
+    if (!req.body.oldUrl) {
+      return res.status(500).send({
+        message: "old url should be provided in order to update.",
+      });
+    }
+
     const url = await Url.findOne({
       _id: req.params.urlId,
     });
@@ -106,6 +123,12 @@ exports.updateUrl = async (req, res) => {
     }
 
     const newUrl = req.body.newUrl;
+
+    if (url.originalUrl != req.body.oldUrl) {
+         return res.status(400).send({
+           message: "Failed ! provided old url not matching with the saved url in DB.",
+         }); 
+    }
 
     // generate new short url
     const newUrlId = shortid.generate();
@@ -129,6 +152,7 @@ exports.updateUrl = async (req, res) => {
     });
   }
 };
+
 exports.deleteUrl = async (req, res) => {
   try {
     await Url.deleteOne({
