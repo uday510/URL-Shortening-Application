@@ -157,6 +157,19 @@ Response :
 ```
 
 ## delete user
+```
+127.0.0.1:4000/app/api/v1/users/admin
+Request :
+ {
+ no need to send any data
+ }
+
+Response : 
+{
+    "message": "Successfully deleted User"
+}
+
+```
 ## To create short url
 
 ```
@@ -165,5 +178,19 @@ Request :
     "url": "http://www.udayteja.com"
 }
 Response :
-
+{
+ {
+    "message": "Short URL created Successfully",
+    "data": {
+        "urlId": "_ULiW1PTR",
+        "originalUrl": "http://www.udayteja.com",
+        "shortUrl": "127.0.0.1:4000/_ULiW1PTR",
+        "_id": "6440d59b8e124692b4c3a1c5",
+        "createdAt": "2023-04-20T06:03:07.001Z",
+        "updatedAt": "2023-04-20T06:03:07.001Z",
+        "__v": 0
+    }
+}
+}
 ```
+
