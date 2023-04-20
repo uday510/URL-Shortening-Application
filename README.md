@@ -68,13 +68,13 @@ npm start:dev
 ```
 
 # Sample Request Response objects
+
+## Signup
 ```
 NOTE : Token should be provided in headers for all endpoints except signup and signin
 
 Eg: 
-x-access-token: yJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImFkbWluIiwiaWF0IjoxNjgxOTY4ODIzLCJleHAiOjE2ODE5Njk0MjN9.VxFqS-    BiYtWtsv5gZdYdX2Tds7koiPFhkx3VT6TpszM
-
-## Signup 
+x-access-token: yJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImFkbWluIiwiaWF0IjoxNjgxOTY4ODIzLCJleHAiOjE2ODE5Njk0MjN9.VxFqS-    BiYtWtsv5gZdYdX2Tds7koiPFhkx3VT6TpszM 
 
 POST 127.0.0.1:4000/app/api/v1/auth/signup
 
