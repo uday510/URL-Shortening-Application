@@ -58,3 +58,11 @@ npm start:dev
  - url delete [DELETE] 127.0.0.1:4000/app/api/v1//urls/:urlId
 ```
 
+## User endpoints
+
+```
+ - user read details [GET]  127.0.0.1:4000/app/api/v1/users/
+ - user update password [PATCH] 127.0.0.1:4000/app/api/v1/users/
+ - user update details [PATCH] 127.0.0.1:4000/app/api/v1/users/:userId
+ - user delete details [DELETE] 127.0.0.1:4000/app/api/v1/users/:userId
+```
