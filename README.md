@@ -125,7 +125,7 @@ Response:
 
 ## Update password
 ```
-127.0.0.1:4000/app/api/v1/users/
+PATCH 127.0.0.1:4000/app/api/v1/users/
 Request : 
 {
     "oldPassword": "xxxxxxxxxxxxxx",
@@ -139,8 +139,8 @@ Response :
 ```
 ## update details
 ```
-127.0.0.1:4000/app/api/v1/users/admin
-Request :  // name or email
+PATCH 127.0.0.1:4000/app/api/v1/users/admin
+Request :  // name or email or both
 {
     "name": "newusername" 
 }
@@ -158,7 +158,7 @@ Response :
 
 ## delete user
 ```
-127.0.0.1:4000/app/api/v1/users/admin
+DELETE 127.0.0.1:4000/app/api/v1/users/admin
 Request :
  {
  no need to send any data
@@ -173,6 +173,7 @@ Response :
 ## To create short url
 
 ```
+POST 127.0.0.1:4000/app/api/v1/urls/
 Request :
 {
     "url": "http://www.udayteja.com"
@@ -191,6 +192,82 @@ Response :
         "__v": 0
     }
 }
+}
+```
+
+## To read the all the urls
+```
+GET 127.0.0.1:4000/app/api/v1/urls/
+Request : {
+  // no need to pass any data
+}
+Response : {
+    "message": "Fetched urls successfully",
+    "data": [
+        {
+            "_id": "6440d59b8e124692b4c3a1c5",
+            "urlId": "CqzVC4Ioc",
+            "originalUrl": "http://www.newurl.com",
+            "shortUrl": "127.0.0.1:4000/CqzVC4Ioc",
+            "createdAt": "2023-04-20T06:03:07.001Z",
+            "updatedAt": "2023-04-20T06:03:07.001Z"
+        }
+    ]
+}
+```
+## To read only one url
+
+```
+GET 127.0.0.1:4000/app/api/v1/urls/6440d59b8e124692b4c3a1c5
+
+Request : {
+ // no need to pass any data
+}
+
+Response : {
+    "urlId": "CqzVC4Ioc",
+    "originalUrl": "http://www.newurl.com",
+    "shortUrl": "127.0.0.1:4000/CqzVC4Ioc",
+    "createdAt": "2023-04-20T06:03:07.001Z",
+    "updatedAt": "2023-04-20T06:03:07.001Z"
+}
+
+```
+## To update the url
+```
+PATCH 127.0.0.1:4000/app/api/v1/urls/6440d59b8e124692b4c3a1c5
+
+Request :
+{
+    "oldUrl" :  "http://www.udayteja.com",
+    "newUrl": "http://www.newurl.com"
+}
+
+Response : 
+{
+    "message": "Successfully updated url details",
+    "updatedUrlDetails": {
+        "_id": "6440d59b8e124692b4c3a1c5",
+        "urlId": "CqzVC4Ioc",
+        "originalUrl": "http://www.newurl.com",
+        "shortUrl": "127.0.0.1:4000/CqzVC4Ioc",
+        "createdAt": "2023-04-20T06:03:07.001Z",
+        "updatedAt": "2023-04-20T06:03:07.001Z",
+        "__v": 0
+    }
+}
+```
+
+## To delete the url
+
+```
+DELETE 127.0.0.1:4000/app/api/v1/urls/6440d59b8e124692b4c3a1c5
+
+Request : {
+// no need to pass any data
+}
+Response : {
+    "message": "Successfully deleted Url"
 }
 ```
 
