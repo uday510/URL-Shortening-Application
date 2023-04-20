@@ -43,6 +43,9 @@ npm start:dev
 # Rest endpoints
 
 ## Authentication endpoints
+```
  - signup [POST] 127.0.0.1:4000/app/api/v1/auth/signup
  - signin [POST] 127.0.0.1:4000/app/api/v1/auth/signin
+ 
+```
 
