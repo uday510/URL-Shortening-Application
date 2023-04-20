@@ -67,4 +67,6 @@ npm start:dev
  - user delete details [DELETE] 127.0.0.1:4000/app/api/v1/users/:userId
 ```
 
-## Sample Request Response objects
+# Sample Request Response objects
+
+## Signup
