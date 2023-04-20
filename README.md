@@ -73,6 +73,8 @@ npm start:dev
 ```
 127.0.0.1:4000/app/api/v1/auth/signin
 
+NOTE: Password should be min 8 length, with at least a symbol, upper and lower case letters and a number 
+
 Request :   
 {
     "name":"admin",
