@@ -69,8 +69,10 @@ npm start:dev
 
 # Sample Request Response objects
 
-## Signup
+## Signup 
 ```
+127.0.0.1:4000/app/api/v1/auth/signin
+
 Request :   
 {
     "name":"admin",
@@ -89,5 +91,27 @@ Response:
     }
 }
 
+```
 ## signin
+
+```
+127.0.0.1:4000/app/api/v1/auth/signin
+
+Request: 
+  {
+    "name":"admin",
+    "userId": "admin",
+    "email": "admin@gmail.com",
+    "password": "xxxxxxxxxxx"
+  }
+
+Response: 
+{
+    "message": "Token sent successfully",
+    "name": "admin",
+    "userId": "admin",
+    "email": "admin@gmail.com",
+    "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImFkbWluIiwiaWF0IjoxNjgxOTY4ODIzLCJleHAiOjE2ODE5Njk0MjN9.VxFqS-       BiYtWtsv5gZdYdX2Tds7koiPFhkx3VT6TpszM"
+}
+
 ```
