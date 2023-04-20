@@ -76,7 +76,7 @@ x-access-token: yJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImFkbWluIiwiaWF0Ijox
 
 ## Signup 
 
-127.0.0.1:4000/app/api/v1/auth/signup
+POST 127.0.0.1:4000/app/api/v1/auth/signup
 
 NOTE: Password should be min 8 length, with at least a symbol, upper and lower case letters and a number 
 
@@ -102,7 +102,7 @@ Response:
 ## signin
 
 ```
-127.0.0.1:4000/app/api/v1/auth/signin
+GET 127.0.0.1:4000/app/api/v1/auth/signin
 
 Request: 
   {
