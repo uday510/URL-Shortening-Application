@@ -70,3 +70,24 @@ npm start:dev
 # Sample Request Response objects
 
 ## Signup
+```
+Request :   
+{
+    "name":"admin",
+    "userId": "admin",
+    "email": "admin@gmail.com",
+    "password": "xxxxxxxxxx"
+}
+
+Response: 
+{
+    "message": "User created successfully",
+    "data": {
+        "name": "admin",
+        "userId": "admin",
+        "email": "admin@gmail.com"
+    }
+}
+
+## signin
+```
