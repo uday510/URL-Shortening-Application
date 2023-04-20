@@ -2,127 +2,145 @@ const bcrypt = require("bcryptjs");
 const Users = require("../models/user.model");
 const objectConverter = require("../utils/objectConverter");
 
+exports.updateUser = async (req, res) => {
+  // Update User
 
- exports.updateUser = async (req, res) => {
-     /**
-      * Update User
-      */
+  // check for userId in params
+  if (!req.params.userId) {
+    return res.status(400).send({
+      message: "User Id not provided",
+    });
+  }
 
-     if(!req.params.userId) {
-            return res.status(400).send({
-            message: "User Id not provided"
-        });
-     }
+  // check for userName in params is equals to current user id
+  if (req.params.userId != req.userId) {
+    return res.status(400).send({
+      message:
+        "user id provided in req.params does not match with token userId",
+    });
+  }
 
-     if (req.params.userId != req.userId) {
-       return res.status(400).send({
-         message:
-           "user id provided in req.params does not match with token userId",
-       });
-     } 
+  try {
+    // get the user details
+    const user = await Users.findOne({ userId: req.userId });
 
-     try {
+    // update the user details
+    user.name = req.body.name != undefined ? req.body.name : user.name;
+    user.email = req.body.email != undefined ? req.body.email : user.email;
 
-        const user = await Users.findOne({ userId: req.userId });
+    // save the user in DB
+    await user.save();
 
-        user.name = (req.body.name != undefined) ? req.body.name : user.name;
-        user.email = (req.body.email != undefined) ? req.body.email : user.email;
+    // return the response
+    return res.status(200).send({
+      message: "User record successfully updated",
+      data: {
+        name: user.name,
+        email: user.email,
+        userId: user.userId,
+      },
+    });
+  } catch (err) {
+    console.log(err.message);
+    res.status(500).send({
+      message: "Internal server error while updating user record",
+    });
+  }
+};
 
-         await user.save();
-         return res.status(200).send({
-             message: "User record successfully updated",
-             data: {
-                name: user.name,
-                email: user.email,
-                userId: user.userId,
-            }
-         });
-     } catch (err) {
-         console.log(err.message);
-         res.status(500).send({
-            message: "Internal server error while updating user record"
-         });
-     }
- }
+// For Updating password
+exports.updatePassword = async (req, res) => {
+  // for newPassword in body
+  if (!req.body.newPassword) {
+    return res.status(400).send({
+      message: "newPassword not provided",
+    });
+  }
+  // check for oldPassword in body
+  if (!req.body.oldPassword) {
+    return res.status(400).send({
+      message: "oldPassword not provided",
+    });
+  }
+  try {
+    // fetch the user
+    const user = await Users.findOne({ userId: req.userId });
 
- exports.updatePassword = async (req, res) => {
-     
-        if(!req.body.newPassword) {
-            return res.status(400).send({
-            message: "newPassword not provided"
-        });
-     }
-        if(!req.body.oldPassword) {
-            return res.status(400).send({
-            message: "oldPassword not provided"
-        });
-     }
-      try {
-         
-        const user = await Users.findOne({userId: req.userId});
-        const isPasswordValid = bcrypt.compareSync(req.body.oldPassword, user.password);
-        
-        if(!isPasswordValid) {
-        return res.status(401).send({
-            message: "Invalid old Password"
-            });
-        }
-        
-        user.password = bcrypt.hashSync(req.body.newPassword, 8);
+    // compare the provided oldPassword with stored password
 
-        await user.save();
+    const isPasswordValid = bcrypt.compareSync(
+      req.body.oldPassword,
+      user.password
+    );
 
-        res.status(200).send({message: "Password successfully updated"});
+    // if not valid , return
+    if (!isPasswordValid) {
+      return res.status(401).send({
+        message: "Invalid old Password",
+      });
+    }
 
-     } catch (err) {
-         console.log(err.message);
-         res.status(500).send({
-            message: "Internal server error while updating password"
-         });
-     }
- }
- exports.fetchUserDetails = async (req, res) => {
-   try {
-       const user = await Users.findOne({ userId: req.userId });
-    
-     res.status(200).send({
-       message: "Fetched user details successfully",
-       data: objectConverter.userObject(user)
-       });
-       
-   } catch (err) {
-     console.log(err.message);
-     res.status(500).send({
-       message: "Internal server error while fetching user details",
-     });
-   }
- };
+    // update the password, and hash using the bcrypt algorithm
+    user.password = bcrypt.hashSync(req.body.newPassword, 8);
 
+    await user.save(); // save the user object
+
+    res.status(200).send({ message: "Password successfully updated" });
+  } catch (err) {
+    console.log(err.message);
+    res.status(500).send({
+      message: "Internal server error while updating password",
+    });
+  }
+};
+// Fetch user details
+exports.fetchUserDetails = async (req, res) => {
+  try {
+    // find the user
+    const user = await Users.findOne({ userId: req.userId });
+
+    // return the response without password
+    res.status(200).send({
+      message: "Fetched user details successfully",
+      data: objectConverter.userObject(user),
+    });
+  } catch (err) {
+    console.log(err.message);
+    res.status(500).send({
+      message: "Internal server error while fetching user details",
+    });
+  }
+};
+
+// Delete the user
 exports.deleteUser = async (req, res) => {
-    if (!req.params.userId) {
-      return res.status(400).send({
-        message: "User Id not provided",
-      });
-    }
+  // check for userId in params
+  if (!req.params.userId) {
+    return res.status(400).send({
+      message: "User Id not provided",
+    });
+  }
 
-    if (req.params.userId != req.userId) {
-      return res.status(400).send({
-        message:
-          "user id provided in req.params does not match with token userId",
-      });
-    } 
-    try {
-        await Users.deleteOne({
-          userId: req.params.userId,
-        });
+  // check for userId validation
+  if (req.params.userId != req.userId) {
+    return res.status(400).send({
+      message:
+        "user id provided in req.params does not match with token userId",
+    });
+  }
+  try {
+    // Delete the user
+    await Users.deleteOne({
+      userId: req.params.userId,
+    });
 
-        return res.status(200).send({
-            message : "Successfully deleted User"
-        });
-
-    } catch (err) {
-        return res.status(500).send({
-            message: "Some internal error occurred while deleting movie."
-        });
-    }
-}
+    // return success message
+    return res.status(200).send({
+      message: "Successfully deleted User",
+    });
+  } catch (err) {
+    return res.status(500).send({
+      message: "Some internal error occurred while deleting movie.",
+    });
+  }
+};

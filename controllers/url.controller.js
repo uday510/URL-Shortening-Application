@@ -3,10 +3,12 @@ const Url = require("../models/url.model");
 const shortid = require("shortid");
 const objectConverter = require("../utils/objectConverter");
 
+// To create short url
 exports.createShortUrl = async (req, res) => {
   try {
     const originalUrl = req.body.url;
 
+    // check in DB for the provided url id
     const urlDetails = await Url.findOne({ originalUrl: originalUrl });
 
     // check if the short url already exists
@@ -22,29 +24,40 @@ exports.createShortUrl = async (req, res) => {
     // generate new short url
     const urlId = shortid.generate();
 
+    // 127.0.0.1:4000/urlId
     const shortUrl = `${process.env.baseURL}/${urlId}`;
 
+    // Obj to be stored in DB
     const urlObjToBeStoredInDB = {
       urlId: urlId,
       originalUrl: req.body.url,
       shortUrl: shortUrl,
     };
 
+    // DB URL Creation
     const shortUrlCreated = await Url.create(urlObjToBeStoredInDB);
 
     if (shortUrlCreated) {
+      // if the url successfully create
       // store the url id in the user database
       const user = await User.findOne({
         userId: req.userId,
       });
+
+      // add the url id user urls array
       user.urlsCreated.push(shortUrlCreated);
+
+      // save the user into DB
       await user.save();
+
+      // return the response
       return res.status(201).send({
         message: "Short URL created Successfully",
         data: shortUrlCreated,
       });
     }
   } catch (err) {
+    // To catch exceptions
     console.error(err.message);
     res.status(500).send({
       message: "Internal server error while creating Short URL",
@@ -52,23 +65,25 @@ exports.createShortUrl = async (req, res) => {
   }
 };
 
+// To fetch all the urls
 exports.fetchAllUrls = async (req, res) => {
   try {
-    const userId = req.userId;
+    const userId = req.userId; // get the userId from Token
 
-    const user = await User.findOne({ userId: userId });
+    const user = await User.findOne({ userId: userId }); // fetch the user
 
-    const queryObj = {};
+    const queryObj = {}; // object for storing  URL'S
 
     queryObj._id = {
-      $in: user.urlsCreated, // Returns the Array of url id's.
+      $in: user.urlsCreated, // Obj to search in url DB.
     };
 
-    const urls = await Url.find(queryObj);
+    const urls = await Url.find(queryObj); // returns the array of url's
 
+    // return the response
     res.status(200).send({
       message: "Fetched urls successfully",
-      data: objectConverter.urlListResponse(urls)
+      data: objectConverter.urlListResponse(urls), // convert the urls for better readability
     });
   } catch (err) {
     console.error(err.message);
@@ -78,6 +93,7 @@ exports.fetchAllUrls = async (req, res) => {
   }
 };
 
+// To fetch only one url
 exports.fetchUrl = async (req, res) => {
   try {
     const url = await Url.findOne({
@@ -98,19 +114,25 @@ exports.fetchUrl = async (req, res) => {
     });
   }
 };
+
+// to update the url
 exports.updateUrl = async (req, res) => {
   try {
+    // to check newUrl provided or not
     if (!req.body.newUrl) {
       return res.status(500).send({
         message: "new url required to update.",
-      }); 
-    }
-    if (!req.body.oldUrl) {
-      return res.status(500).send({
-        message: "old url should be provided in order to update.",
       });
     }
-
+    // to check oldUrl provided or not
+    if (!req.body.newUrl) {
+      if (!req.body.oldUrl) {
+        return res.status(500).send({
+          message: "old url should be provided in order to update.",
+        });
+      }
+    }
+    // fetch the url from DB based on params id
     const url = await Url.findOne({
       _id: req.params.urlId,
     });
@@ -122,12 +144,14 @@ exports.updateUrl = async (req, res) => {
       });
     }
 
-    const newUrl = req.body.newUrl;
+    const newUrl = req.body.newUrl; // new url
 
+    // validation for whether provided old url is matching with the original url stored in the DB.
     if (url.originalUrl != req.body.oldUrl) {
-         return res.status(400).send({
-           message: "Failed ! provided old url not matching with the saved url in DB.",
-         }); 
+      return res.status(400).send({
+        message:
+          "Failed ! provided old url not matching with the saved url in DB.",
+      });
     }
 
     // generate new short url
@@ -146,6 +170,7 @@ exports.updateUrl = async (req, res) => {
       updatedUrlDetails: updatedUrl,
     });
   } catch (err) {
+    // catch the error
     console.error(err.message);
     res.status(500).send({
       message: "Internal server error while updating URL",
@@ -153,8 +178,10 @@ exports.updateUrl = async (req, res) => {
   }
 };
 
+// to delete url
 exports.deleteUrl = async (req, res) => {
   try {
+    // fetch the url
     await Url.deleteOne({
       _id: req.params.urlId,
     });
@@ -164,11 +191,11 @@ exports.deleteUrl = async (req, res) => {
 
     // find index of url id in the user url list
 
-    let indexToBeRemoved = user.urlsCreated.indexOf(req.params.urlId);
+    let indexToBeRemoved = user.urlsCreated.indexOf(req.params.urlId); // find the index
 
-    user.urlsCreated.splice(indexToBeRemoved, 1);
+    user.urlsCreated.splice(indexToBeRemoved, 1); // remove the index
 
-    await user.save();
+    await user.save(); // save the user
 
     return res.status(200).send({
       message: "Successfully deleted Url",

@@ -1,4 +1,5 @@
-exports.userObject = (user) => {
+// Remove password field from user object and send response to the user
+exports.userObject = (user) => { 
   return {
     _id: user._id,
     name: user.name,
@@ -10,6 +11,7 @@ exports.userObject = (user) => {
   };
 };
 
+// Generate the url list response from the list of urls
 exports.urlListResponse = (urls) => {
   urlResult = [];
   urls.forEach(url => {
@@ -25,6 +27,7 @@ exports.urlListResponse = (urls) => {
   return urlResult;
 }
 
+// Generate the url response object from the url
 exports.urlResponse = (url) => {
   return {
     urlId: url.urlId,

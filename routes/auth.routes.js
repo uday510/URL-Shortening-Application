@@ -13,5 +13,4 @@ module.exports = (app) => {
     [authUser.validateSigninRequest],
     authController.signin
   ); // for user signin
-    
 };

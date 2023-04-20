@@ -1,3 +1,4 @@
+// Regex to validate the email,
 exports.validateEmail = (email) => {
   return String(email)
     .toLowerCase()
@@ -6,12 +7,14 @@ exports.validateEmail = (email) => {
     );
 };
 
+// Regex to validate the password, password should be min 8 length
 exports.validatePassword = (password) => {
-    const re = /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
-    
-    return re.test(password);
-}
+  const re = /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
 
+  return re.test(password);
+};
+
+// Regex to validate the url
 exports.isValidUrl = (url) => {
   const pattern = new RegExp(
     "^(https?:\\/\\/)?" + // validate protocol
@@ -22,6 +25,6 @@ exports.isValidUrl = (url) => {
       "(\\#[-a-z\\d_]*)?$",
     "i"
   );
-  
-  return pattern.test(url);
-}
+
+  return pattern.test(url); // check whether url matches the RegExp pattern
+};
