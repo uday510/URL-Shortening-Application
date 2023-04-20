@@ -125,6 +125,7 @@ Response:
 
 ## Update password
 ```
+127.0.0.1:4000/app/api/v1/users/
 Request : 
 {
     "oldPassword": "xxxxxxxxxxxxxx",
@@ -138,7 +139,7 @@ Response :
 ```
 ## update details
 ```
-
+127.0.0.1:4000/app/api/v1/users/admin
 Request :  // name or email
 {
     "name": "newusername" 
@@ -155,7 +156,9 @@ Response :
 }
 ```
 
+## delete user
 ## To create short url
+
 ```
 Request :
 {
