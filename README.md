@@ -49,3 +49,12 @@ npm start:dev
  
 ```
 
+## Url endpoints
+```
+ - url create [POST] 127.0.0.1:4000/app/api/v1//urls/
+ - url read all [GET]  127.0.0.1:4000/app/api/v1//urls/
+ - url read one [GET]  127.0.0.1:4000/app/api/v1//urls/:urlId
+ - url update [PATCH] 127.0.0.1:4000/app/api/v1//urls/:urlId
+ - url delete [DELETE] 127.0.0.1:4000/app/api/v1//urls/:urlId
+```
+
