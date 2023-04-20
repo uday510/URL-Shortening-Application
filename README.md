@@ -66,3 +66,5 @@ npm start:dev
  - user update details [PATCH] 127.0.0.1:4000/app/api/v1/users/:userId
  - user delete details [DELETE] 127.0.0.1:4000/app/api/v1/users/:userId
 ```
+
+## Sample Request Response objects
