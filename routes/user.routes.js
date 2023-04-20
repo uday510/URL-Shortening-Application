@@ -6,23 +6,24 @@ module.exports = (app) => {
     "/app/api/v1/users/",
     [authUser.verifyToken],
     userController.fetchUserDetails
-  );
+  ); // for fetching the user details
   
   app.patch(
     "/app/api/v1/users/",
     [authUser.verifyToken],
     userController.updatePassword
-  );
+  ); // for updating the user password
 
   app.patch(
     "/app/api/v1/users/:userId",
     [authUser.verifyToken],
     userController.updateUser
-  );
-
+  ); // for updating the user details
+ 
   app.delete(
     "/app/api/v1/users/:userId",
     [authUser.verifyToken],
     userController.deleteUser
-  );
+  ); // for deleting the user
+
 };

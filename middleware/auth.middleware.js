@@ -3,8 +3,9 @@ const Config = require("../configs/auth.config");
 const User = require("../models/user.model");
 const Util = require("../utils/util");
 
+// To Validate whether the sign in request contains name ans password
 validateSigninRequest = (req, res, next) => {
-  if (!req.body.name) {
+  if (!req.body.name) { 
     return res.status(400).send({
       message: "Failed ! name is not provided",
     });
@@ -14,11 +15,12 @@ validateSigninRequest = (req, res, next) => {
       message: "Failed ! password is not provided",
     });
   }
+  // if required fields are provided the forwarding the request to the controller
   next();
 };
 
 validateSignupRequest = async (req, res, next) => {
-  // Validate if userName exists
+  // Validate if fields that are required are provided
   if (!req.body.name) {
     return res.status(400).send({
       message: "Failed ! user name is not provided",
@@ -39,18 +41,16 @@ validateSignupRequest = async (req, res, next) => {
       message: "Failed ! Password is not provided",
     });
   }
-  /**
-   *  Validate if the userId is already exists
-   */
+
+   // Validate if the userId is already exists
   const user = await User.findOne({ userId: req.body.userId });
-  // console.log(user);
   if (user != null) {
     return res.status(400).send({
       message: "Failed ! User Id already exists",
     });
   }
 
-  // validate email
+  // Validate Email using Regular Expression
 
   if (!Util.validateEmail(req.body.email)) {
     return res.status(400).send({
@@ -58,7 +58,7 @@ validateSignupRequest = async (req, res, next) => {
     });
   }
 
-  // validate password
+  // validate Password using Regular Expression
     
   if (!Util.validatePassword(req.body.password)) {
       return res.status(400).send({
@@ -67,13 +67,13 @@ validateSignupRequest = async (req, res, next) => {
       });
   }
 
-  next(); //! Revert back to the controller
+  // If all OK then 
+  next(); // Revert back to the controller
 };
 
+// Verify the Provided Token 
 verifyToken = (req, res, next) => {
-  /**
-   * ! Read the token from the header
-   */
+   // Read the token from the header
 
   const token = req.headers["x-access-token"];
 
@@ -93,11 +93,11 @@ verifyToken = (req, res, next) => {
     }
     // Try to read the userId from the decoded token and store it in the req.userId property
     req.userId = decoded.id;
-    next();
+    next(); // revert back to the controller
   });
 };
 
-
+// Exposing the functions to outside of this file
 const authUser = {
   validateSignupRequest: validateSignupRequest,
   validateSigninRequest: validateSigninRequest,

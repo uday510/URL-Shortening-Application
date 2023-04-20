@@ -14,7 +14,7 @@ function requestTime(req, res, next) {
 }
 
 app.use(requestTime); // logs request time
-app.use(bodyParser.json());
+app.use(bodyParser.json()); // used to parse the request and extract the information
 app.use(bodyParser.urlencoded({ extended: true }));
 
 require("./routes")(app) // Initialize the route/s
