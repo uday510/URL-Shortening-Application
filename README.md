@@ -3,7 +3,7 @@ This is NodeJS Based Application to shortening the URL
 
 ## Features
 * Client can signup 
-* Client can login
+* Client can signin
 * Client can update password
 * Client can update details
 * Client can delete details
@@ -40,5 +40,9 @@ npm install
 npm start:dev
 ```
 
-## Rest endpoints
-#### [GET] localhost:4000/app/api/v1/users 
+# Rest endpoints
+
+## Authentication endpoints
+ - signup [POST] 127.0.0.1:4000/app/api/v1/auth/signup
+ - signin [POST] 127.0.0.1:4000/app/api/v1/auth/signin
+
