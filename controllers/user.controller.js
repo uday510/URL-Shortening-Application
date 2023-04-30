@@ -1,6 +1,7 @@
 const bcrypt = require("bcryptjs");
 const Users = require("../models/user.model");
 const objectConverter = require("../utils/objectConverter");
+const Util = require("../utils/util");
 
 exports.updateUser = async (req, res) => {
   // Update User
@@ -60,6 +61,14 @@ exports.updatePassword = async (req, res) => {
   if (!req.body.oldPassword) {
     return res.status(400).send({
       message: "oldPassword not provided",
+    });
+  }
+  // validate newPassword
+  if (!Util.validatePassword(req.body.newPassword)) {
+    return res.status(400).send({
+      statusCode: 400,
+      message: "Failed ! New Password id not valid",
+      hint: "New Password should be min 8 length, with at least a symbol, upper and lower case letters and a number ",
     });
   }
   try {
